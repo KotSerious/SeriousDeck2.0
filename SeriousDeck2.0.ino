@@ -43,7 +43,6 @@ int sendPressedKey(int Row, int Col){
 
     if (InputKey == HIGH && keyDown[keyPosition]!=0){
     // If key is up and a character is stored in the keydown position
-
       lastDebounceTime[keyPosition] = millis(); // Reset keybounce delay
       Keyboard.release(keyDown[keyPosition]);
       keyDown[keyPosition]=0;
@@ -68,19 +67,22 @@ int analogSliderValues[NUM_SLIDERS];
 void setup() {
   Control_Surface.begin();
   Serial.begin(9600);
-  
   Keyboard.begin();
 
-  for (int i=0; i<12; i++) keyDown[i]=0;
+  for (int i=0; i<12; i++) {
+    keyDown[i]=0;
+  }
 
-  for (int Row=0; Row<4; Row++) 
+  for (int Row=0; Row<4; Row++) {
     pinMode(RowPinMap[Row], INPUT_PULLUP);
-
-  for (int Col=0; Col<3; Col++) 
+  }
+  
+  for (int Col=0; Col<3; Col++) {
     pinMode(ColPinMap[Col],INPUT_PULLUP);
+  }
 
   for (int i = 0; i < NUM_SLIDERS; i++) {
-  pinMode(analogInputs[i], INPUT);
+    pinMode(analogInputs[i], INPUT);
   }
 
 }
@@ -125,7 +127,6 @@ void loop() // main keyboard scanning loop
     delay(1);                     // Delay to make sure it has time to go HIGH before switching to INPUT
     pinMode(RowPin,INPUT_PULLUP); // Set output pin back to INPUT with pullup to make sure it stays HIGH
   }
-
   Control_Surface.loop();
   updateSliderValues();
   sendSliderValues();
@@ -145,7 +146,6 @@ void sendSliderValues() {
       builtString += String("|");
     }
   }
-  
   Serial.println(builtString);
 }
 
@@ -155,7 +155,8 @@ void printSliderValues() {
     Serial.write(printedString.c_str());
     if (i < NUM_SLIDERS - 1) {
       Serial.write(" | ");
-    } else {
+    } 
+    else {
       Serial.write("\n");
     }
   }
